@@ -29,9 +29,9 @@ class ArticlesController extends Controller
       return view('articles.index', compact('articles'));
     }
 
-    public function show($id){
+    public function show(Article $article){
 
-      $article = Article::findOrFail($id);
+      // $article = Article::findOrFail($id);
 
       // die dump or dd allows you to debug the contents of a variable
       // dd($article->published_at);
@@ -61,16 +61,12 @@ class ArticlesController extends Controller
       return redirect('articles');
     }
 
-    public function edit($id){
-
-      $article = Article::findOrFail($id);
+    public function edit(Article $article){
 
       return view('articles.edit', compact('article'));
     }
 
-    public function update($id, ArticleRequest $request){
-
-      $article = Article::findOrFail($id);
+    public function update(Article $article){
 
       $article->update($request->all());
 
