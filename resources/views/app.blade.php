@@ -8,9 +8,23 @@
   </head>
   <body>
     <div class="container">
+      @include('flash::message')
+
       @yield('content')
 
     </div>
+
+    {{-- add the bootstrap js and jquery cdn --}}
+    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+      // if using an overlay modal then you have to call the modal() method
+      $('#flash-overlay-modal').modal();
+
+      $('div.alert').not('.alert-important').delay(3000).slideUp(300);
+    </script>
+
     @yield('footer')
   </body>
 </html>
