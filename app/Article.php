@@ -39,4 +39,12 @@ class Article extends Model
       // App\User relates to the path of the model
       return $this->belongsTo('App\User');
     }
+
+    // get the tags associated with the given article
+
+    public function tags()
+    {
+      return $this->belongsToMany('App\Tag');
+
+    }
 }
