@@ -41,10 +41,18 @@ class Article extends Model
     }
 
     // get the tags associated with the given article
-
     public function tags()
     {
       return $this->belongsToMany('App\Tag');
 
+    }
+
+    /**
+    * Get a list of tag ids associated with the current article
+    *
+    */
+    public function getTagListAttribute()
+    {
+      return $this->tags->pluck('id')->toArray();
     }
 }

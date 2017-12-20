@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Tag;
 use App\Http\Requests;
 use App\Http\Requests\ArticleRequest;
 use Illuminate\HttpResponse;
@@ -46,15 +47,17 @@ class ArticlesController extends Controller
 
     public function create(){
 
-      return view('articles.create');
+      $tags = Tag::pluck('name', 'id');
+      return view('articles.create', compact('tags'));
     }
 
     // Requests\CreateArticleRequest can be imported above
     public function store(ArticleRequest $request){
-      // We want to make sure the user_id => Auth::id()
-      $article = new Article($request->all());
 
-      \Auth::user()->articles()->save($article); // find the articles for the user that's logged in and save the new one
+      // We want to make sure the user_id => Auth::id()
+      // $article = new Article($request->all());
+
+      $this->createArticle($request); // create a method to create a new article
 
       // display flash message to let the user know new article was created
       // flash('Your article has been created');
@@ -69,13 +72,40 @@ class ArticlesController extends Controller
 
     public function edit(Article $article){
 
-      return view('articles.edit', compact('article'));
+      $tags = Tag::pluck('name', 'id');
+      return view('articles.edit', compact('article', 'tags'));
     }
 
-    public function update(Article $article){
+    public function update(ArticleRequest $request, Article $article){
 
       $article->update($request->all());
 
+      $this->syncTags($article, $request->input('tag_list'));
+
       return redirect('articles');
+    }
+
+
+    /**
+    * sync up the list of tags
+    *
+    */
+    private function syncTags(Article $article, array $tags)
+    {
+      $article->tags()->sync($tags); // sync allows laravel to take care of the deleting and adding for you
+
+    }
+
+    /**
+    * method to create a new article
+    *
+    */
+    private function createArticle(ArticleRequest $request)
+    {
+      $article = \Auth::user()->articles()->create($request->all()); // find the articles for the user that's logged in and save the new one
+
+      $this->syncTags($article, $request->input('tag_list'));
+
+      return $article;
     }
 }
