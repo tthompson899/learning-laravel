@@ -26,8 +26,7 @@ class ArticlesController extends Controller
       // return $articles;
       $articles = Article::latest('published_at')->published()->get(); // the latest() is equivalent to order_by('published_at', 'desc')->get();
 
-
-      return view('articles.index', compact('articles'));
+      return view('articles.index', compact('articles', 'latest'));
     }
 
     public function show(Article $article){
