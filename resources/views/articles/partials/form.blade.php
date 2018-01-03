@@ -19,10 +19,19 @@
   {{-- Tags Form input --}}
   <div class="form-group">
     {!! Form::label('tag_list', 'Tags:') !!}
-    {!! Form::select('tag_list[]', $tags, null, ['class' => 'form-control', 'multiple']) !!}
+    {!! Form::select('tag_list[]', $tags, null, ['id' => 'tag_list', 'class' => 'form-control', 'multiple']) !!}
   </div>
 
   {{-- submit button to add article --}}
   <div class="form-group">
     {!! Form::submit($submitButtonText, ['class' => 'btn btn-primary for-control']) !!}
   </div>
+
+@section('footer')
+<!-- setting tags to true allows the user to proceed to create a tag that does not exist -->
+  <script>
+    $('#tag_list').select2({
+      placeholder: 'Choose a Tag'
+    });
+  </script>
+@endsection
