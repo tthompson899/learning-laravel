@@ -28,7 +28,16 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
 
         // enable route model binding - use for smaller projects
-        Route::model('article', 'App\Article');
+        // Route::model('article', 'App\Article');
+
+        Route::bind('article', function($id){
+            return \App\Article::published()->findOrFail($id);
+        });
+
+
+        Route::bind('tags', function($name){
+            return \App\Tag::where('name', $name)->firstOrFail(); 
+        });
 
         // for larger projects
         // Route::bind('article', function($id)

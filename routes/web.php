@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('foo', 'FooController@foo');
+
 Route::get('/', function(){
     return 'Home Page';
 });
@@ -26,6 +28,7 @@ Route::get('contact', 'PagesController@contact');
 // this command creates all the routes for Restful application
 Route::resource('articles', 'ArticlesController');
 
+Route::get('tags/{tags}', 'TagsController@show');
 // this works for api's
 // Route::get('foo', function(){
 //   return 'Bar';
@@ -34,9 +37,9 @@ Route::resource('articles', 'ArticlesController');
 Auth::routes();
 
 // trying out our own middleware
-Route::get('foo', ['middleware' => 'manager', function()
-{
-    return 'This page may only be viewed by Managers!';
-}]);
+// Route::get('foo', ['middleware' => 'manager', function()
+// {
+//     return 'This page may only be viewed by Managers!';
+// }]);
 
 // Route::get('/home', 'HomeController@index')->name('home');
